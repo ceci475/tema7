@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <style>
+        body {
+            color: pink;
+        }
+
+        #display {
+            height: 20vw;
+            width: 20vw;
+            border: 1px solid silver;
+            margin: 7vw;
+            padding: 1vw;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="display"></div>
+
+
+
+    <script>
+        let playlist = ["Sound of Music", "Dancing in the rain", "What a wonderful world", "Lille peter edderkop", "Den knaldrøde gummibåd", "Så længe jeg lever", "Happy", "Sucker for you", "Lose control", "Mean it"];
+        playlist.forEach(sang => {
+            document.querySelector("#display").innerHTML += `${sang} <br>`;
+        })
+    </script>
+</body></html>

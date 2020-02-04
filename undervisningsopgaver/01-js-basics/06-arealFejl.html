@@ -10,27 +10,52 @@
 
 <body>
 
+    <input type="text" id="længde">
+
+    <input type="text" id="bredde">
+
+    <button id="knap">Beregn</button>
+
     <script>
-        let længde = prompt("Angiv længde");
-        let bredde = prompt("Angiv bredde");
+        document.querySelector("knap").addEventListener("click", knap_clicked);
 
-        function areal(l, b) {
-            let a = (l * b);
-            if (a == 0) {
-                return (`Husk længde og bredde skal være tal.\n Prøv igen`)
-            } else if (isNaN(a)) {
-                return (`Fejl.\n Prøv igen med tal`)
+        function knap_clicked() {
+            let længde = document.querySelector("#længde").value;
+            let bredde = document.querySelector("#bredde").value;
+            let resultat = længde * bredde;
+
+
+            if (isNan(længde) == true || isNaN(bredde) == true) {
+                resultat = "Den er gal"
             } else {
-                return ('Arealet er ${a}. \n Vil du lave et nyt areal?')
+                resultat = længde * bredde;
             }
+
+
+            console.log("Resultatet", resultat);
+
         }
 
-        let resultat = areal(længde, bredde);
-
-        confirm(resultat);
-
-        if (confirm) {
-            location.reload();
-        }
+        //        let længde = prompt("Angiv længde");
+        //        let bredde = prompt("Angiv bredde");
+        //
+        //        function areal(l, b) {
+        //            let a = (l * b);
+        //            if (a == 0) {
+        //                return (`Husk længde og bredde skal være tal.\n Prøv igen`)
+        //            } else if (isNaN(a)) {
+        //                return (`Fejl.\n Prøv igen med tal`)
+        //            } else {
+        //                return ('Arealet er ${a}. \n Vil du lave et nyt areal?')
+        //            }
+        //        }
+        //
+        //        let resultat = areal(længde, bredde);
+        //
+        //        confirm(resultat);
+        //
+        //        if (confirm) {
+        //            location.reload();
+        //        }
     </script>
 </body></html>

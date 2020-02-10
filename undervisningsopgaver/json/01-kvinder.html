@@ -37,6 +37,7 @@
     h1 {
         text-align: center;
     }
+
 </style>
 
 
@@ -101,8 +102,6 @@
             container.innerHTML = "";
 
 
-
-
             personer.feed.entry.forEach((person) => {
                 if (filter == "alle" || filter == person.gsx$sex.$t) {
                     let klon = personerTemplate.cloneNode(true).content;
@@ -141,5 +140,8 @@
             visPersoner();
 
         }
+
     </script>
-</body></html>
+</body>
+
+</html>

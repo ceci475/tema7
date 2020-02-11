@@ -22,6 +22,7 @@
 
     img {
         width: 100%;
+        object-fit: contain;
     }
 
     main {
@@ -82,31 +83,34 @@
         z-index: 10;
         text-align: center;
         overflow: scroll;
+
+    }
+
+    #detalje #luk {
+        position: fixed;
+        top: 0;
+        font-size: 2rem;
         cursor: pointer;
+    }
+
+    #luk {
+        margin: 1em;
     }
 
     .popup {
         margin: 2em 7em 7em 7em;
         padding: 2em;
-        background-color: #FBF9F4;
+        height: 65vh;
+        background-color: lightgray;
     }
 
     #detalje button {
         font-size: 1em;
-    }
-
-    p {
-        line-height: 1.5rem;
+        margin-top: 50px;
     }
 
     .skjul {
         display: none;
-    }
-
-    footer {
-        margin: 50px 50px 40px 50px;
-        font-family: Questrial;
-        text-align: center;
     }
 </style>
 
@@ -132,9 +136,8 @@
 <body>
 
     <section id="detalje" class="skjul">
-
+        <button>X</button>
         <article class="popup">
-            <button>X</button>
             <h2></h2>
             <img src="" alt="">
             <p class="lang"></p>
@@ -148,6 +151,7 @@
             <h2></h2>
             <img src="" alt="">
             <p class="id"></p>
+            <p class="kategori"></p>
             <p class="kort"></p>
             <p class="lang"></p>
             <p class="oprindelse"></p>
@@ -157,9 +161,7 @@
 
     <main></main>
 
-    <footer><b>Åbningstider:</b> Mandag-torsdag 10.30-21.00 / Fredag-lørdag: 12.00-22.00<br><br>
-        <b>Adresse:</b> Linnésgade 24, 1361 København K
-    </footer>
+
 
 
 
@@ -197,8 +199,11 @@
                     klon.querySelector(".pris").textContent = `Pris: ${madogdrikke.gsx$pris.$t}kr.`;
                     klon.querySelector(".kort").textContent = madogdrikke.gsx$kort.$t;
                     klon.querySelector("img").src = `imgs/small/${madogdrikke.gsx$billede.$t}-sm.jpg`;
-                    klon.querySelector(".madogdrikke").addEventListener("click", () => visDetalje(madogdrikke));
+
+                    klon.querySelector(".madogdrikke").addEventListener("click", visDetalje)
                     container.appendChild(klon);
+
+
                 }
             })
         }
@@ -214,7 +219,7 @@
         function filtrering() {
             console.log("FILTER");
             filter = this.dataset.ret;
-            document.querySelector("h1").textContent = this.textContent;
+            document.querySelector("h2").textContent = this.textContent;
             document.querySelectorAll(".filter").forEach(elm => {
                 elm.classList.remove("valgt");
             })
@@ -225,11 +230,12 @@
         function visDetalje(madogdrikke) {
             detalje.classList.remove("skjul");
             detalje.querySelector("button").addEventListener("click", () => detalje.classList.add("skjul"));
-            detalje.querySelector("h2").textContent = madogdrikke.gsx$navn.$t;
-            detalje.querySelector("p + p + p").textContent = `Pris: ${madogdrikke.gsx$pris.$t}kr.`;
-            detalje.querySelector("p").textContent = madogdrikke.gsx$lang.$t;
-            detalje.querySelector("p + p").textContent = `Oprindelse: ${madogdrikke.gsx$oprindelse.$t}`;
-            detalje.querySelector("img").src = `imgs/large/${madogdrikke.gsx$billede.$t}.jpg`;
+            klon.querySelector("h2").textContent = popup.gsx$navn.$t;
+            klon.querySelector("p + p").textContent = `Pris:${popup.gsx$pris.$t}kr.`;
+            klon.querySelector("p").textContent = popup.gsx$lang.$t;
+            klon.querySelector("p + p").textContent = `Oprindelse:${popup.gsx$oprindelse.$t}`;
+            klon.querySelector("img").src = `imgs/large/${popup.gsx$billede.$t}-jpg`;
+
         }
     </script>
 

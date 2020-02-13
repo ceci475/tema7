@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bistro Babushka version 2</title>
+    <style>
+        body {
+            background-color: #e6ddd2;
+            margin: 0;
+        }
+
+        img {
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .data-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            max-width: 1000px;
+            margin: 0 auto;
+            grid-gap: 10px;
+        }
+
+        nav {
+            text-align: center;
+            padding-bottom: 15px;
+        }
+
+        nav .valgt {
+            background-color: aliceblue;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: Questrial;
+            margin-top: 40px;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        article {
+            font-family: Questrial;
+            padding: 25px;
+            border: none;
+            background-color: aliceblue;
+        }
+
+        article:nth-child(odd) {
+            background-color: #FBF9F4;
+        }
+
+        #detalje button {
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        p {
+            line-height: 1.5rem;
+        }
+
+        footer {
+            margin: 50px 50px 40px 50px;
+            font-family: Questrial;
+            text-align: center;
+        }
+
+
+        button {
+            font-size: 0.9rem;
+            font-family: Questrial;
+            padding: 5px 10px 5px 10px;
+            margin: 2px;
+            border: none;
+            background-color: transparent;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+
+<div class="logo">
+    <img src="logo.png" alt="logo">
+</div>
+
+<body>
+    <nav class="menu">
+        <button class="filter valgt" data-ret="alle">Alle</button>
+        <button class="filter" data-ret="forretter">Forretter</button>
+        <button class="filter" data-ret="hovedretter">Hovedretter</button>
+        <button class="filter" data-ret="desserter">Desserter</button>
+        <button class="filter" data-ret="drikkevarer">Drikkevarer</button>
+        <button class="filter" data-ret="sideorders">Sideorders</button>
+        <h1>Alle</h1>
+    </nav>
+
+
+    <section class="data-container">
+
+    </section>
+
+
+    <template>
+        <article class="madogdrikke">
+            <h2></h2>
+            <img src="" alt="">
+            <p class="kort"></p>
+            <p class="pris"></p>
+        </article>
+    </template>
+
+    <main></main>
+
+    <footer><b>Åbningstider:</b> Mandag-torsdag 10.30-21.00 / Fredag-lørdag: 12.00-22.00<br><br>
+        <b>Adresse:</b> Linnésgade 24, 1361 København K
+    </footer>
+
+
+    <script>
+        let menukort = [];
+        const idSheet = "17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0";
+        const endpoint = `https://spreadsheets.google.com/feeds/list/${idSheet}/od6/public/values?alt=json`;
+
+        let filter = "alle";
+
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            document.querySelectorAll("nav button").forEach(knap => {
+                knap.addEventListener("click", filtrerMenukort)
+            });
+            loadData();
+        }
+        async function loadData() {
+            const response = await fetch(endpoint);
+            menukort = await response.json();
+            console.log(menukort);
+            visMenukort();
+        }
+
+        function visMenukort() {
+            const container = document.querySelector(".data-container");
+            const template = document.querySelector("template");
+            container.textContent = "";
+            menukort.feed.entry.forEach(madogdrikke => {
+                if (filter == "alle" || filter == madogdrikke.gsx$kategori.$t) {
+                    let klon = template.cloneNode(true).content;
+                    klon.querySelector("h2").textContent = madogdrikke.gsx$navn.$t;
+                    klon.querySelector("p + p").textContent = `Pris: ${madogdrikke.gsx$pris.$t}kr.`;
+                    klon.querySelector("p").textContent = madogdrikke.gsx$kort.$t;
+                    klon.querySelector("img").src = `imgs/small/${madogdrikke.gsx$billede.$t}-sm.jpg`;
+                    klon.querySelector(".madogdrikke").addEventListener("click", () => {
+                        //visDetalje(menukort);
+                        console.log("test");
+                        location.href = "detalje.html?id=" + madogdrikke.gsx$id.$t;
+                    });
+                    container.appendChild(klon);
+                }
+            });
+        }
+
+        // funktion der filtrerer menukort (json)
+        function filtrerMenukort() {
+            filter = this.dataset.ret; // sæt variabel "filter" til aktuel værdi
+            document.querySelector(".valgt").classList.remove("valgt"); // fjern klassen valgt fra aktuel knap
+            this.classList.add("valgt") // marker den nyvalgte knap
+            document.querySelector("h1").textContent = this.textContent;
+            visMenukort(); // kald funktionen vis igen med nyt filter
+        }
+    </script>
+</body></html>
